@@ -94,7 +94,7 @@ function Base.iterate(iter::OptimIterator, istate = nothing)
 
         iteration += 1
 
-        ls_failed = update_state!(d, state, method)
+        ls_success = !update_state!(d, state, method)
         if !ls_success
             # it returns true if it's forced by something in update! to stop (eg dx_dg == 0.0 in BFGS, or linesearch errors)
             return nothing
@@ -188,7 +188,7 @@ function OptimizationResults(istate::IteratorState)
                                         f_calls(d),
                                         g_calls(d),
                                         h_calls(d),
-                                        !ls_success,
+                                        ls_success,
                                         options.time_limit,
                                         _time-t0,
                                         )
